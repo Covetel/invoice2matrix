@@ -1,0 +1,45 @@
+[%- USE Latex; FILTER latex("ps"); -%]
+\documentclass[10pt,letterpaper,oneside,spanish]{article}
+\usepackage[spanish]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{fullpage}
+
+\thispagestyle{empty}
+\begin{document}
+\sffamily
+
+\hspace{12cm} {\bfseries Factura N:} {\huge [% invoice.id %]}\\[2cm]
+
+\hspace{10cm} {\bfseries Fecha de Emisión:} [% invoice.date %]\\
+
+\hspace{10.6cm} {\bfseries Contribuyente no sujeto} \\
+
+
+\begin{tabular}{|p{15cm}|}
+\hline
+{\bfseries NOMBRE O RAZÓN SOCIAL:} [% invoice.client.name %] \\
+\hline
+{\bfseries No.RIF o CED.No:} [% invoice.client.id %]\\
+\hline
+{\bfseries FORMA DE PAGO:} [%invoice.paymentform%]\\
+\hline
+\end{tabular}
+
+\vspace{2cm}
+
+
+\begin{tabular}{|c|p{6.7cm}|p{2cm}|p{3cm}|}
+\hline
+\textbf{CANTIDAD} & \textbf{CONCEPTO O DESCRIPCION} & \textbf{PRECIO UNITARIO} & \textbf{VALOR TOTAL} \\
+[% FOREACH item IN invoice.items %]
+\hline
+[% item.qty %] & [% item.desc %] & [% item.unit_price %] & [% item.total_price %]\\
+\hline
+[% END %]
+\end{tabular}
+
+\end{document}
+[%  END; -%]
+
+
+
