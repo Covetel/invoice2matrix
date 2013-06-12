@@ -15,6 +15,9 @@ my $vars = {
 				   id => 'J-29532381-6',
 				  },
 			paymentform => 'CONTADO',
+			sub_total => '123.321,00',
+			iva => 0,
+			total => '123.321,00'
 		       },
 };
 
