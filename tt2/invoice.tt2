@@ -3,19 +3,23 @@
 \usepackage[spanish]{babel}
 \usepackage[utf8]{inputenc}
 \usepackage{fullpage}
+\usepackage{graphicx}
+
 
 \thispagestyle{empty}
+
+\addtolength{\topmargin}{4cm}
+
 \begin{document}
 \sffamily
 
-\hspace{12cm} {\bfseries Factura N:} {\huge [% invoice.id %]}\\[2cm]
+\begin{flushright}
+{\bfseries Factura N:} {\huge [% invoice.id %]}\\[1.5cm]
+{\bfseries Fecha de Emisión:} [% invoice.date %]\\
+{\bfseries Contribuyente no sujeto} \\
+\end{flushright}
 
-\hspace{10cm} {\bfseries Fecha de Emisión:} [% invoice.date %]\\
-
-\hspace{10.6cm} {\bfseries Contribuyente no sujeto} \\
-
-
-\begin{tabular}{|p{15cm}|}
+\begin{tabular}{|p{15.6cm}|}
 \hline
 {\bfseries NOMBRE O RAZÓN SOCIAL:} [% invoice.client.name %] \\
 \hline
@@ -25,10 +29,10 @@
 \hline
 \end{tabular}
 
-\vspace{2cm}
+\vspace{1cm}
 
 
-\begin{tabular}{|c|p{6.7cm}|p{2cm}|p{3cm}|}
+\begin{tabular}{|c|p{7.8cm}|p{2cm}|c|}
 \hline
 \textbf{CANTIDAD} & \textbf{CONCEPTO O DESCRIPCION} & \textbf{PRECIO UNITARIO} & \textbf{VALOR TOTAL} \\
 [% FOREACH item IN invoice.items %]
@@ -38,8 +42,16 @@
 [% END %]
 \end{tabular}
 
+
+\begin{flushright}
+\begin{tabular}{r r}
+\textbf{SUB-TOTAL GRAVADO Bs.F}& [% invoice.sub_total %]\\ 
+
+\textbf{IVA 0\% Bs.F:} & [% invoice.iva %]\\
+
+\textbf{TOTAL A PAGAR Bs.F: }& [% invoice.total %]
+\end{tabular}
+\end{flushright}
+
 \end{document}
 [%  END; -%]
-
-
-
