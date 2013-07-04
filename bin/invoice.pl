@@ -36,15 +36,23 @@ my @factura = $db->resultset('FacturaControl')->find({'id_factura' => $id});
 my $vars;
 
 foreach my $factura (@factura) {
+
+    my $payment_form;
+    if ($factura->metodo_pago == 0){
+        $payment_form = "CONTADO";
+    }else{
+        $payment_form= "CREDITO";
+    }
+
     $vars = {
        invoice => {
            id => $id,
-           date => $factura->fecha_emision,
+           date => substr($factura->fecha_emision,0,10),
            client => {
                 name => $factura->id_cliente->nombre,
                 id => $factura->id_cliente->rif,
            },
-           paymentform => $factura->metodo_pago,
+           paymentform => $payment_form,
            sub_total => $tot,
            iva => $iva,
            total => $tot+$iva,
