@@ -4,6 +4,7 @@ use strict;
 use warnings;
 use lib qw(lib);
 use Facturacion::Schema;
+use Number::Format;
 
 my $tt = Template->new({
 		       INCLUDE_PATH => '../tt2/',
@@ -25,8 +26,8 @@ foreach my $item (@factura_items) {
     push  @items,{
         qty => $item->item_cant,
         desc => $item->descripcion,
-        unit_price => $item->sub_total,
-        total_price => $item->total,
+        unit_price => &number_format($item->sub_total),
+        total_price => &number_format($item->total),
     };
     $tot += $item->total;
 }
@@ -44,18 +45,20 @@ foreach my $factura (@factura) {
         $payment_form= "CREDITO";
     }
 
+    my $subtotal;
+
     $vars = {
        invoice => {
            id => $id,
-           date => substr($factura->fecha_emision,0,10),
+           date => &date_format($factura->fecha_emision),
            client => {
                 name => $factura->id_cliente->nombre,
                 id => $factura->id_cliente->rif,
            },
            paymentform => $payment_form,
-           sub_total => $tot,
+           sub_total => &number_format($tot),
            iva => $iva,
-           total => $tot+$iva,
+           total => &number_format($tot+$iva),
        },
     };
 }
@@ -63,3 +66,22 @@ foreach my $factura (@factura) {
 $vars->{'invoice'}->{'items'} = \@items;
 
 $tt->process('invoice.tt2', $vars) || die $tt->error(), "\n";
+
+sub number_format {
+    my $n = shift;
+    my $format = new Number::Format(
+        THOUSANDS_SEP   => '.',
+        DECIMAL_POINT   => ',',
+    );
+
+    return$format->format_number($n);
+}
+
+sub date_format {
+    my $d = shift;
+    my $year = substr($d, 0, 4);
+    my $month = substr($d, 5, 2);
+    my $day = substr($d, 8, 2);
+
+    return $day."-".$month."-".$year;
+}
